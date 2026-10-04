@@ -1,4 +1,4 @@
-/*import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   X, 
   Trash2, 
@@ -316,4 +316,4 @@ export const CartDrawer = () => {
       </div>
     </div>
   );
-};/*
+};
