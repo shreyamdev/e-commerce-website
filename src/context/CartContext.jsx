@@ -1,4 +1,4 @@
-/*import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { VALID_COUPONS } from '../data/products';
 
 const CartContext = createContext();
