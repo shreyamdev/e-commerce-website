@@ -1,4 +1,4 @@
-/*export const CATEGORIES = [
+export const CATEGORIES = [
   { id: 'all', name: 'All Drops', icon: 'Sparkles', count: 24 },
   { id: 'sneakers', name: 'Sneakers', icon: 'Footprints', count: 8 },
   { id: 'hoodies', name: 'Hoodies & Sweatshirts', icon: 'Shirt', count: 6 },
@@ -538,4 +538,4 @@ export const REVIEWS_MOCK = [
     content: 'Ordered on Tuesday afternoon and arrived Thursday morning in Mumbai. Packaging was pristine with authenticity cards.',
     helpfulCount: 18
   }
-];/*
+];
