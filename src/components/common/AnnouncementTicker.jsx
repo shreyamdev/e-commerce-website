@@ -1,4 +1,4 @@
-/*import React from 'react';
+import React from 'react';
 import { Tag, Sparkles, Truck, Flame } from 'lucide-react';
 import { FLASH_DEALS } from '../../data/products';
 
