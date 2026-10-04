@@ -1,4 +1,4 @@
-/*import React, { createContext, useContext, useState, useMemo } from 'react';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 import { PRODUCTS } from '../data/products';
 
 const StoreContext = createContext();
