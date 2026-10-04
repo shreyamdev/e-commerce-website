@@ -1,4 +1,4 @@
-/*import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { 
   Check, 
   CreditCard, 
@@ -18,7 +18,7 @@ import confetti from 'canvas-confetti';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
 
-/*export const CheckoutPage = () => {
+export const CheckoutPage = () => {
   const { cartItems, grandTotal, subtotal, discountAmount, shippingFee, appliedCoupon, clearCart } = useCart();
   const { navigateTo, placedOrder, setPlacedOrder } = useStore();
 

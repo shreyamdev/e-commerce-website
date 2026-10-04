@@ -1,4 +1,4 @@
-/*import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   ArrowRight, 
   Sparkles, 
@@ -324,4 +324,4 @@ export const HomePage = () => {
 
     </div>
   );
-};/*
+};
