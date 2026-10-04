@@ -1,4 +1,4 @@
-/*import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Heart, 
@@ -279,7 +279,7 @@ export const Header = () => {
                   {totalItemsCount}
                 </span>
               )}
-            </button>*/
+            </button>
 
             {/* Profile Dropdown */}
            /* <div className="relative">
@@ -455,4 +455,4 @@ export const Header = () => {
       )}
     </header>
   );
-};*/
+};
