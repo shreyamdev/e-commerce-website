@@ -40,7 +40,7 @@ npm install
 ```bash
 npm run dev
 ```
-Open your browser at `http://localhost:5173`.
+Open your browser at 
 
 ### 4. Build for Production
 ```bash
