@@ -101,10 +101,10 @@ export const Header = () => {
                 </span>
               </div>
             </button>
-          </div>*/
+          </div>
 
           {/* Amazon-Style Search Bar Setup */}
-         /* <div className="hidden md:flex flex-1 max-w-xl mx-4">
+          <div className="hidden md:flex flex-1 max-w-xl mx-4">
             <form 
               onSubmit={handleSearchSubmit}
               className="flex w-full items-center rounded-full border-2 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 hover:border-black dark:hover:border-neutral-500 focus-within:border-black dark:focus-within:border-white focus-within:bg-white dark:focus-within:bg-neutral-900 transition-all overflow-hidden shadow-sm"
@@ -249,10 +249,10 @@ export const Header = () => {
               ) : (
                 <Moon className="w-5 h-5 text-neutral-800" />
               )}
-            </button>*/
+            </button>
 
             {/* Wishlist Icon */}
-          /*  <button
+           <button
              onClick={() => navigateTo('wishlist')}
               className="relative p-2.5 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full transition-colors"
               title="View Wishlist"
@@ -264,10 +264,10 @@ export const Header = () => {
                   {wishlistCount}
                 </span>
               )}
-            </button>*/
+            </button>
 
             {/* Cart Trigger with item count and slide-over activation */}
-          /*  <button
+            <button
               onClick={() => setIsDrawerOpen(true)}
               className="relative flex items-center p-2.5 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full transition-colors group"
               title="Open Cart"
@@ -282,7 +282,7 @@ export const Header = () => {
             </button>
 
             {/* Profile Dropdown */}
-           /* <div className="relative">
+           <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center space-x-2 p-1.5 sm:px-3 sm:py-1.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 transition-colors"
@@ -350,10 +350,10 @@ export const Header = () => {
 
           </div>
 
-        </div>*/
+        </div>
 
         {/* Mobile Search Input Bar */}
-     /*   <div className="md:hidden pb-3">
+       <div className="md:hidden pb-3">
           <form 
             onSubmit={handleSearchSubmit}
             className="flex items-center rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-3 py-2 text-sm focus-within:border-black dark:focus-within:border-white focus-within:bg-white dark:focus-within:bg-neutral-900"
@@ -377,10 +377,10 @@ export const Header = () => {
             )}
           </form>
         </div>
-      </div>*/
+      </div>
 
       {/* Mobile Drawer Menu */}
-     /* {mobileMenuOpen && (
+     {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
           <div 
             className="w-4/5 max-w-sm h-full bg-white dark:bg-neutral-900 p-6 shadow-2xl flex flex-col justify-between"
