@@ -8,7 +8,7 @@ export const AnnouncementTicker = () => {
       <div className="flex w-max animate-marquee space-x-12 items-center">
         {/* Double the list to create a seamless infinite marquee */}/*
         {[...FLASH_DEALS, ...FLASH_DEALS].map((deal, idx) => (
-          <div key={idx} className="flex items-center space-x-3 text-neutral-300 hover:text-white transition-colors cursor-pointer">
+        <div key={idx} className="flex items-center space-x-3 text-neutral-300 hover:text-white transition-colors cursor-pointer">
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold bg-[#FF3E6C] text-white">
               HOT DROP
             </span>

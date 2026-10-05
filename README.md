@@ -2,11 +2,7 @@
 
 A modern, responsive, and production-ready React + Vite + Tailwind CSS frontend application built for a Full-Stack E-Commerce college team project.
 
-The application blends design aesthetics from 4 iconic commerce platforms:
-1. **Nike**: Bold typography, high-contrast dark/light layout, sleek product grids, and high-impact minimalist hero carousel.
-2. **Amazon**: Search bar with category dropdown, faceted sidebar filters (categories, price slider, brands, ratings, stock), clear checkout flow, and order tracking timeline.
-3. **Myntra**: Hover zoom cards, floating wishlist heart toggle with live counter, dynamic discount badges, and slide-over cart drawer.
-4. **The Souled Store**: Vibrant accent badges, streetwear vibes, horizontal category chip sliders, and coupon ticker marquee bars.
+
 
 ---
 
