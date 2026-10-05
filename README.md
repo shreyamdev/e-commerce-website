@@ -22,10 +22,7 @@ Configured in `tailwind.config.js`:
 - **Node.js**: v18+ (tested on Node v22)
 - **npm**: v9+ (tested on npm v10)
 
-### 1. Navigate to Project Directory
-```bash
-cd C:\Users\shrey\.gemini\antigravity\scratch\ecommerce-storefront
-```
+
 
 ### 2. Install Dependencies (if not already installed)
 ```bash
