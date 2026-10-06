@@ -14,6 +14,8 @@ import { WishlistPage } from './pages/WishlistPage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { OrderTrackingPage } from './pages/OrderTrackingPage';
+import { ProfilePage } from './pages/ProfilePage';
+
 
 const AppContent = () => {
   const { currentView } = useStore();
@@ -36,6 +38,8 @@ const AppContent = () => {
         return <AdminDashboard />;
       case 'order-tracking':
         return <OrderTrackingPage />;
+      case 'profile':
+        return <ProfilePage />;
       default:
         return <HomePage />;
     }

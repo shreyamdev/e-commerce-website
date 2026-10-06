@@ -33,7 +33,7 @@ export const Header = () => {
   const { totalItemsCount, setIsDrawerOpen } = useCart();
   const { wishlistCount } = useWishlist();
 
- 
+  // ☀️ / 🌙 Dark Mode State
   const [isDark, setIsDark] = useState(() => {
     try {
       return localStorage.getItem('hyped_theme') === 'dark';
@@ -75,7 +75,7 @@ export const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20 gap-4">
           
-        
+          {/* Brand Logo & Mobile Menu Toggle */}
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -103,13 +103,12 @@ export const Header = () => {
             </button>
           </div>
 
-          {/* Amazon-Style Search Bar Setup */}
+          {/* Amazon-Style Search Bar */}
           <div className="hidden md:flex flex-1 max-w-xl mx-4">
             <form 
               onSubmit={handleSearchSubmit}
               className="flex w-full items-center rounded-full border-2 border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 hover:border-black dark:hover:border-neutral-500 focus-within:border-black dark:focus-within:border-white focus-within:bg-white dark:focus-within:bg-neutral-900 transition-all overflow-hidden shadow-sm"
             >
-             
               <div className="relative border-r border-neutral-200 dark:border-neutral-700">
                 <select
                   value={selectedCategory}
@@ -130,7 +129,6 @@ export const Header = () => {
                 <ChevronDown className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
 
-        
               <div className="relative flex-1 flex items-center">
                 <input
                   type="text"
@@ -155,7 +153,6 @@ export const Header = () => {
                 )}
               </div>
 
-            
               <button
                 type="submit"
                 className="bg-black hover:bg-neutral-800 text-white p-3 px-5 transition-colors flex items-center justify-center"
@@ -166,7 +163,7 @@ export const Header = () => {
             </form>
           </div>
 
-      
+          {/* Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-7 text-sm font-bold tracking-tight text-neutral-800 dark:text-neutral-200">
             <button
               onClick={() => handleNavClick('home')}
@@ -233,10 +230,10 @@ export const Header = () => {
             </button>
           </nav>
 
-        
+          {/* Action Icons */}
           <div className="flex items-center space-x-2 sm:space-x-3">
             
-            
+            {/* ☀️ / 🌙 Theme Toggle Button */}
             <button
               type="button"
               onClick={toggleTheme}
@@ -247,13 +244,13 @@ export const Header = () => {
               {isDark ? (
                 <Sun className="w-5 h-5 text-[#FFA41C]" />
               ) : (
-                <Moon className="w-5 h-5 text-neutral-800" />
+                <Moon className="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
               )}
             </button>
 
-            {/* Wishlist Icon */}
-           <button
-             onClick={() => navigateTo('wishlist')}
+            {/* Wishlist */}
+            <button
+              onClick={() => navigateTo('wishlist')}
               className="relative p-2.5 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full transition-colors"
               title="View Wishlist"
               aria-label="Wishlist"
@@ -266,7 +263,7 @@ export const Header = () => {
               )}
             </button>
 
-            {/* Cart Trigger with item count and slide-over activation */}
+            {/* Cart Trigger */}
             <button
               onClick={() => setIsDrawerOpen(true)}
               className="relative flex items-center p-2.5 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full transition-colors group"
@@ -282,7 +279,7 @@ export const Header = () => {
             </button>
 
             {/* Profile Dropdown */}
-           <div className="relative">
+            <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                 className="flex items-center space-x-2 p-1.5 sm:px-3 sm:py-1.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 transition-colors"
@@ -308,34 +305,49 @@ export const Header = () => {
                     </span>
                   </div>
 
+                  {/* 👤 My Profile */}
+                  <button
+                    onClick={() => {
+                      navigateTo('profile');
+                      setProfileDropdownOpen(false);
+                    }}
+                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium transition-colors"
+                  >
+                    <User className="w-4 h-4 text-neutral-500" />
+                    <span>My Account & Profile</span>
+                  </button>
+
+                  {/* 📦 Track Orders */}
                   <button
                     onClick={() => {
                       navigateTo('order-tracking');
                       setProfileDropdownOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium"
+                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium transition-colors"
                   >
                     <Package className="w-4 h-4 text-neutral-500" />
                     <span>Track Active Orders</span>
                   </button>
 
+                  {/* ❤️ Wishlist */}
                   <button
                     onClick={() => {
                       navigateTo('wishlist');
                       setProfileDropdownOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium"
+                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium transition-colors"
                   >
                     <Heart className="w-4 h-4 text-[#FF3E6C]" />
                     <span>My Wishlist ({wishlistCount})</span>
                   </button>
 
+                  {/* 🛠️ Admin Dashboard */}
                   <button
                     onClick={() => {
                       navigateTo('admin');
                       setProfileDropdownOpen(false);
                     }}
-                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium"
+                    className="w-full text-left px-4 py-2.5 text-sm text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white flex items-center space-x-2.5 font-medium transition-colors"
                   >
                     <SlidersHorizontal className="w-4 h-4 text-blue-500" />
                     <span>Admin Dashboard</span>
@@ -352,8 +364,8 @@ export const Header = () => {
 
         </div>
 
-        {/* Mobile Search Input Bar */}
-       <div className="md:hidden pb-3">
+        {/* Mobile Search */}
+        <div className="md:hidden pb-3">
           <form 
             onSubmit={handleSearchSubmit}
             className="flex items-center rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-3 py-2 text-sm focus-within:border-black dark:focus-within:border-white focus-within:bg-white dark:focus-within:bg-neutral-900"
@@ -379,8 +391,8 @@ export const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-     {mobileMenuOpen && (
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}>
           <div 
             className="w-4/5 max-w-sm h-full bg-white dark:bg-neutral-900 p-6 shadow-2xl flex flex-col justify-between"
@@ -431,6 +443,12 @@ export const Header = () => {
                   Cargo & Pants
                 </button>
                 <button
+                  onClick={() => handleNavClick('profile')}
+                  className="text-left font-bold text-lg text-neutral-900 dark:text-white hover:text-[#FF3E6C]"
+                >
+                  My Account & Profile
+                </button>
+                <button
                   onClick={() => handleNavClick('admin')}
                   className="text-left font-bold text-lg text-blue-600 hover:text-blue-400"
                 >
@@ -440,7 +458,10 @@ export const Header = () => {
             </div>
 
             <div className="pt-6 border-t border-neutral-200 dark:border-neutral-800">
-              <div className="flex items-center space-x-3 bg-neutral-100 dark:bg-neutral-800 p-3 rounded-xl">
+              <div 
+                onClick={() => handleNavClick('profile')}
+                className="flex items-center space-x-3 bg-neutral-100 dark:bg-neutral-800 p-3 rounded-xl cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+              >
                 <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">
                   JD
                 </div>
