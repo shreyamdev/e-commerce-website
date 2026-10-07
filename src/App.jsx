@@ -7,7 +7,7 @@ import { WishlistProvider } from './context/WishlistContext';
 // Common Layout Components
 import { Header } from './components/common/Header';
 import { AnnouncementTicker } from './components/common/AnnouncementTicker';
-import { CartDrawer } from './components/common/CartDrawer';
+import { CartDrawer } from './components/cart/CartDrawer';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 // Page Views

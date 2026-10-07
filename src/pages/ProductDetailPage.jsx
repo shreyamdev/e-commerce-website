@@ -409,7 +409,7 @@ export const ProductDetailPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           
-          {/* Rating Summary Card (Amazon style) */}
+          {/* Rating Summary Card  */}
           <div className="md:col-span-4 bg-white p-6 rounded-3xl border border-neutral-200/80 space-y-4">
             <div className="text-center pb-4 border-b border-neutral-100">
               <span className="text-5xl font-black text-neutral-900">{product.rating}</span>
@@ -423,7 +423,7 @@ export const ProductDetailPage = () => {
               </span>
             </div>
 
-            {/* Rating Progress Bars (Amazon style requirement) */}
+            {/* Rating Progress Bars  */}
             <div className="space-y-2 text-xs">
               <div className="flex items-center space-x-3">
                 <span className="w-12 font-bold text-neutral-700">5 Star</span>

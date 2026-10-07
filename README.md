@@ -1,70 +1,96 @@
-# Getting Started with Create React App
+# ⚡ HYPED.CO | Next-Gen Streetwear & Sneaker E-Commerce Storefront
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern, responsive, and production-ready React + Vite + Tailwind CSS frontend application built for a Full-Stack E-Commerce college team project.
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🎨 Theme & Color Palette
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Configured in `tailwind.config.js`:
+- `brand-primary`: `#111111` (Deep slate / black - Nike inspired)
+- `brand-accent`: `#FF3E6C` (Vibrant electric pink/red - Myntra inspired)
+- `brand-yellow`: `#FFA41C` (Gold - Amazon ratings & buy buttons)
+- `brand-bg`: `#F5F5F6` (High-contrast neutral backdrop)
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Getting Started
 
-### `npm run build`
+### Prerequisites
+- **Node.js**: v18+ (tested on Node v22)
+- **npm**: v9+ (tested on npm v10)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. Install Dependencies (if not already installed)
+```bash
+npm install
+```
 
-### `npm run eject`
+### 3. Run the Development Server
+```bash
+npm run dev
+```
+Open your browser at 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 4. Build for Production
+```bash
+npm run build
+npm run preview
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 📂 Project Structure
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+ecommerce-storefront/
+├── index.html                   # HTML mount point with Google Fonts (Inter & Montserrat)
+├── package.json                 # Dependencies: React 18, Vite, Tailwind CSS, Lucide React, Canvas Confetti
+├── tailwind.config.js           # Custom brand colors, keyframe animations, marquee, and shadows
+├── postcss.config.js            # PostCSS configuration for Tailwind & Autoprefixer
+├── vite.config.js               # Vite bundler configuration
+└── src/
+    ├── main.jsx                 # Application entry point
+    ├── App.jsx                  # Root layout, providers, and view router
+    ├── index.css                # Tailwind base directives and modern scrollbar styles
+    ├── context/
+    │   ├── CartContext.jsx      # Slide drawer, item count, coupon engine, subtotals, free shipping meter
+    │   ├── WishlistContext.jsx  # Wishlist state persistence, badge counter, toggle actions
+    │   └── StoreContext.jsx     # Navigation views, Amazon-style filters, search sync, catalog sorting
+    ├── data/
+    │   └── products.js          # Catalog of 12+ detailed streetwear/sneaker drops, coupons, slides, reviews
+    ├── components/
+    │   ├── common/
+    │   │   ├── AnnouncementTicker.jsx # Souled Store animated marquee ticker with promo codes
+    │   │   ├── Header.jsx             # Sticky glassmorphic navbar with Amazon-style search & action badges
+    │   │   ├── CartDrawer.jsx         # Slide-over cart drawer with free shipping progress & promo codes
+    │   │   └── Footer.jsx             # Authenticity guarantee badges, newsletter, and category directory
+    │   └── product/
+    │       ├── ProductCard.jsx        # Reusable card: image zoom, floating heart, discount pill, quick-add
+    │       └── FilterSidebar.jsx      # Amazon-style faceted filters (categories, price slider, brands, ratings)
+    └── pages/
+        ├── HomePage.jsx               # Hero carousel, category chips, flash deal ticker, tabbed drops grid
+        ├── ProductListingPage.jsx     # PLP with sidebar filters, removable filter badges, sorting dropdown
+        ├── ProductDetailPage.jsx     # PDP with thumbnail gallery, zoom lens, pincode ETA, reviews breakdown
+        ├── CartPage.jsx               # Dedicated full cart page with cost breakdown box
+        ├── WishlistPage.jsx           # Dedicated wishlist page with one-click "Move All to Bag"
+        ├── CheckoutPage.jsx           # Multi-step checkout (Address -> Payment -> Status Timeline Tracker)
+        ├── OrderTrackingPage.jsx      # Real-time shipment journey with carrier checkpoints
+        └── AdminDashboard.jsx         # Store admin panel with KPI stats cards, recent orders, & low-stock alerts
+```
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 💡 Tested Coupons & Demo Features
+Try these coupons in the Cart Drawer or Checkout:
+- `HYPED20` — 20% Off Storewide
+- `WELCOME10` — 10% Welcome Discount
+- `STREET30` — 30% Streetwear Fiesta
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Demo Navigation & Shortcuts
+- Click **"Admin"** in the top navigation or user menu to inspect the Store Admin Dashboard.
+- Click **"Track Active Orders"** in the profile dropdown to inspect live carrier checkpoints.
+- Use the **Step 1 - 5** simulation buttons on the Checkout confirmation screen to preview each order milestone in the status timeline tracker.
