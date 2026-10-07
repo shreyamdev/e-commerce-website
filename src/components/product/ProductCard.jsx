@@ -34,7 +34,7 @@ export const ProductCard = ({ product }) => {
       className="group relative bg-white rounded-2xl border border-neutral-100/80 shadow-sm hover:shadow-xl hover:border-neutral-300 transition-all duration-300 overflow-hidden cursor-pointer flex flex-col justify-between"
     >
       {/* Image Container with Hover Zoom */}
-      <div className="relative aspect-[4/5] bg-neutral-100 overflow-hidden">
+      <div classNe="relative aspect-[4/5] bg-neutral-100 overflow-hidden">
         <img
           src={product.images[0]}
           alt={product.name}

@@ -16,7 +16,7 @@ import { useStore } from '../context/StoreContext';
 
 export const CartPage = () => {
   const { 
-    cartItems, 
+    cartItems,
     updateQuantity, 
     removeFromCart, 
     subtotal, 
