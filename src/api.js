@@ -1,26 +1,17 @@
-// src/api.js
 import { useEffect, useState } from 'react';
+import { api } from './api/httpClient';
 
 export const useFetchDrops = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products`, {
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_API_KEY}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const result = await response.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching drops:", error);
-      }
-    };
-
-    fetchData();
+    let active = true;
+    api.get('/products')
+      .then((response) => {
+        if (active) setData(response.products || []);
+      })
+      .catch((error) => console.error('Error fetching drops:', error));
+    return () => { active = false; };
   }, []);
 
   return data;

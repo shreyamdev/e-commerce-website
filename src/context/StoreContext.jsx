@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useMemo } from 'react';
 import { PRODUCTS } from '../data/products';
-
 const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {
@@ -12,7 +11,7 @@ export const StoreProvider = ({ children }) => {
   const [priceRange, setPriceRange] = useState([0, 250]);
   const [minRating, setMinRating] = useState(0);
   const [inStockOnly, setInStockOnly] = useState(false);
-  const [sortBy, setSortBy] = useState('featured'); // 'featured', 'price-asc', 'price-desc', 'rating', 'newest'
+  const [sortBy, setSortBy] = useState('featured'); // 'featured', 'price-asc', 'price-desc', 'rating"', 'newest'
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'compact' | 'list'
   const [placedOrder, setPlacedOrder] = useState(null);
 
