@@ -49,7 +49,7 @@ export const Footer = () => {
               </div>
               <div>
                 <h4 className="text-xs font-black uppercase tracking-wider text-white">Express Delivery</h4>
-                <p className="text-[11px] text-neutral-400 mt-0.5">Free delivery on orders $100+</p>
+                <p className="text-[11px] text-neutral-400 mt-0.5">Free delivery on orders ₹100+</p>
               </div>
             </div>
 

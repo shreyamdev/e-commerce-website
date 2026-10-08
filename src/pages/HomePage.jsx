@@ -16,11 +16,11 @@ import {
   Watch
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { HERO_SLIDES, CATEGORIES, PRODUCTS } from '../data/products';
+import { HERO_SLIDES, CATEGORIES } from '../data/products';
 import { ProductCard } from '../components/product/ProductCard';
 
 export const HomePage = () => {
-  const { navigateTo, setSelectedCategory } = useStore();
+  const { navigateTo, setSelectedCategory, products = [] } = useStore();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeTab, setActiveTab] = useState('trending'); // 'trending', 'bestsellers', 'new', 'under100'
 
@@ -35,11 +35,11 @@ export const HomePage = () => {
   const slide = HERO_SLIDES[currentSlide];
 
   // Filter products by tab
-  const tabProducts = PRODUCTS.filter((product) => {
+  const tabProducts = products.filter((product) => {
     if (activeTab === 'trending') return product.isTrending;
     if (activeTab === 'bestsellers') return product.isBestSeller;
     if (activeTab === 'new') return product.isNew;
-    if (activeTab === 'under100') return product.price < 100;
+    if (activeTab === 'under100') return product.price < 500;
     return true;
   });
 
@@ -181,7 +181,7 @@ export const HomePage = () => {
                   {cat.name}
                 </span>
                 <span className="text-[10px] font-semibold text-neutral-400">
-                  {cat.count} Items
+                  {products.filter((product) => cat.id === 'all' || product.category === cat.id).length} Items
                 </span>
               </div>
             </button>
@@ -265,7 +265,7 @@ export const HomePage = () => {
                 activeTab === 'under100' ? 'bg-black text-white shadow-sm' : 'text-neutral-700 hover:text-black'
               }`}
             >
-              Under $100 🏷️
+              Under ₹500 🏷️
             </button>
           </div>
         </div>
@@ -282,7 +282,7 @@ export const HomePage = () => {
             onClick={() => { setSelectedCategory('all'); navigateTo('shop'); }}
             className="px-8 py-4 bg-neutral-900 hover:bg-black text-white rounded-full font-black text-xs uppercase tracking-widest transition-transform hover:scale-105 shadow-md"
           >
-            Explore Complete Catalog ({PRODUCTS.length} Drops)
+            Explore Complete Catalog ({products.length} Drops)
           </button>
         </div>
       </section>

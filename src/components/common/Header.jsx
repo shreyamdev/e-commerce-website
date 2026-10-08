@@ -259,7 +259,7 @@ export const Header = () => {
 
             {/* Wishlist Button */}
             <button
-              onClick={() => handleNavClick('shop')}
+              onClick={() => handleNavClick('wishlist')}
               className="relative p-2.5 rounded-xl text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-black dark:hover:text-white transition-colors"
               aria-label="View Wishlist"
             >

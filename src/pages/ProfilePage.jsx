@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { useWishlist } from '../context/WishlistContext';
+import { formatINR } from '../utils/currency';
 
 export const ProfilePage = () => {
   const { navigateTo, placedOrder } = useStore();
@@ -68,7 +69,7 @@ export const ProfilePage = () => {
       item: placedOrder && placedOrder.items.length > 0 ? placedOrder.items[0].product.name : 'Air Matrix Pulse Phantom',
       image: placedOrder && placedOrder.items.length > 0 ? placedOrder.items[0].product.images[0] : 'https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=400&q=80',
       date: placedOrder ? placedOrder.date : 'Oct 04, 2026',
-      total: placedOrder ? `$${placedOrder.total}` : '$159',
+      total: placedOrder ? formatINR(placedOrder.total) : formatINR(159),
       status: 'In Transit',
       itemsCount: placedOrder ? placedOrder.items.length : 1
     },
@@ -77,7 +78,7 @@ export const ProfilePage = () => {
       item: 'Retro High OG "Cyber Rust"',
       image: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=400&q=80',
       date: 'Sep 21, 2026',
-      total: '$189',
+      total: formatINR(189),
       status: 'Delivered',
       itemsCount: 1
     },
@@ -86,7 +87,7 @@ export const ProfilePage = () => {
       item: 'Heavyweight Acid-Wash Oversized Hoodie',
       image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=400&q=80',
       date: 'Aug 14, 2026',
-      total: '$79',
+      total: formatINR(79),
       status: 'Delivered',
       itemsCount: 2
     }

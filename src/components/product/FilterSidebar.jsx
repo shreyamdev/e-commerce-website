@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { CATEGORIES, BRANDS } from '../../data/products';
+import { formatINR } from '../../utils/currency';
 
 export const FilterSidebar = ({ isMobileOpen, onCloseMobile }) => {
   const {
@@ -22,7 +23,8 @@ export const FilterSidebar = ({ isMobileOpen, onCloseMobile }) => {
     inStockOnly,
     setInStockOnly,
     clearAllFilters,
-    activeFiltersCount
+    activeFiltersCount,
+    products = []
   } = useStore();
 
   const content = (
@@ -59,6 +61,9 @@ export const FilterSidebar = ({ isMobileOpen, onCloseMobile }) => {
         <div className="space-y-1">
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.id;
+            const count = cat.id === 'all'
+              ? products.length
+              : products.filter((product) => product.category === cat.id).length;
             return (
               <button
                 key={cat.id}
@@ -71,7 +76,7 @@ export const FilterSidebar = ({ isMobileOpen, onCloseMobile }) => {
               >
                 <span>{cat.name}</span>
                 <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isSelected ? 'bg-neutral-800 text-neutral-300' : 'bg-neutral-100 text-neutral-500'}`}>
-                  {cat.count}
+                  {count}
                 </span>
               </button>
             );
@@ -86,21 +91,21 @@ export const FilterSidebar = ({ isMobileOpen, onCloseMobile }) => {
             Max Price
           </h4>
           <span className="text-xs font-black text-[#111111] bg-neutral-100 px-2.5 py-1 rounded-lg border border-neutral-200">
-            ${priceRange[1]}
+            {formatINR(priceRange[1])}
           </span>
         </div>
         <input
           type="range"
-          min="30"
-          max="250"
+          min="0"
+          max="100000"
           step="10"
           value={priceRange[1]}
           onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
           className="w-full accent-black cursor-pointer h-1.5 bg-neutral-200 rounded-lg"
         />
         <div className="flex justify-between text-[11px] text-neutral-400 mt-2 font-medium">
-          <span>Min: $30</span>
-          <span>Max: $250</span>
+          <span>Min: ₹0</span>
+          <span>Max: ₹1,00,000</span>
         </div>
       </div>
 

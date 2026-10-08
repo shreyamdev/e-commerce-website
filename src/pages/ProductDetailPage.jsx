@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   Star, 
   Heart, 
@@ -19,15 +19,18 @@ import {
 import { useStore } from '../context/StoreContext';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
-import { PRODUCTS, REVIEWS_MOCK } from '../data/products';
+import { useAuth } from '../context/AuthContext';
+import { api } from '../api/httpClient';
 import { ProductCard } from '../components/product/ProductCard';
+import { formatINR } from '../utils/currency';
 
 export const ProductDetailPage = () => {
-  const { selectedProduct, navigateTo } = useStore();
+  const { selectedProduct, products = [], navigateTo, refreshProducts } = useStore();
   const { addToCart } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { isAuthenticated } = useAuth();
 
-  const product = selectedProduct || PRODUCTS[0];
+  const product = selectedProduct;
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState(product.sizes ? product.sizes[0] : 'Standard');
@@ -45,16 +48,95 @@ export const ProductDetailPage = () => {
   });
 
   const [addedNotice, setAddedNotice] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [reviewLoading, setReviewLoading] = useState(false);
+  const [reviewError, setReviewError] = useState('');
+  const [reviewSuccess, setReviewSuccess] = useState('');
 
   const toggleAccordion = (section) => {
     setOpenAccordions((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const isBackendProductId = (id) => /^[a-f0-9]{24}$/i.test(String(id || ''));
+
+  const loadReviews = async () => {
+    if (!product?.id || !isBackendProductId(product.id)) {
+      setReviews([]);
+      return;
+    }
+
+    try {
+      const response = await api.get(`/reviews/${product.id}`);
+      setReviews(Array.isArray(response.reviews) ? response.reviews : []);
+    } catch (error) {
+      console.warn('Unable to load reviews:', error);
+      setReviews([]);
+    }
+  };
+
+  useEffect(() => {
+    if (!product) return;
+    setActiveImageIndex(0);
+    setSelectedSize(product.sizes?.[0] || 'Standard');
+    setSelectedColor(product.colors?.[0]?.name || 'Default');
+    setQuantity(1);
+    setReviewError('');
+    setReviewSuccess('');
+    loadReviews();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product?.id]);
+
+  const handleColorSelect = (color, index) => {
+    setSelectedColor(color.name);
+    const nextImageIndex = Number.isInteger(color.imageIndex) ? color.imageIndex : index;
+    setActiveImageIndex(Math.min(Math.max(nextImageIndex, 0), Math.max(product.images.length - 1, 0)));
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    setReviewError('');
+    setReviewSuccess('');
+
+    if (!isAuthenticated) {
+      navigateTo('auth');
+      return;
+    }
+
+    if (!product?.id || !isBackendProductId(product.id)) {
+      setReviewError('This demo product is not connected to the backend catalog yet.');
+      return;
+    }
+
+    if (!reviewComment.trim()) {
+      setReviewError('Please write a short review comment.');
+      return;
+    }
+
+    setReviewLoading(true);
+    try {
+      await api.post(`/reviews/${product.id}`, {
+        rating: reviewRating,
+        comment: reviewComment.trim()
+      });
+      setReviewComment('');
+      setReviewRating(5);
+      setReviewSuccess('Review added successfully.');
+      await loadReviews();
+      if (refreshProducts) await refreshProducts();
+    } catch (error) {
+      setReviewError(error.data?.message || error.message || 'Unable to add review.');
+    } finally {
+      setReviewLoading(false);
+    }
   };
 
   const handlePincodeCheck = (e) => {
     e.preventDefault();
     if (pincode.trim().length >= 4) {
       setPincodeChecked(true);
-      setPincodeMessage('Express Delivery available: Arriving by Wednesday, Oct 7 (Free with orders over $100)');
+      setPincodeMessage('Express Delivery available: Arriving soon. Free with qualifying orders.');
     }
   };
 
@@ -72,9 +154,23 @@ export const ProductDetailPage = () => {
   const isFavorited = isInWishlist(product.id);
 
   // Related products
-  const relatedProducts = PRODUCTS.filter(
-    (p) => p.category === product.category && p.id !== product.id
+  const relatedProducts = products.filter(
+    (p) => p.category === product?.category && p.id !== product?.id
   ).slice(0, 4);
+
+  if (!product) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <h2 className="text-2xl font-black uppercase">Product unavailable</h2>
+        <button onClick={() => navigateTo('shop')} className="mt-4 px-6 py-3 bg-black text-white rounded-xl text-xs font-black uppercase">Back to Catalog</button>
+      </div>
+    );
+  }
+
+  const averageReviewRating = reviews.length
+    ? reviews.reduce((sum, review) => sum + Number(review.rating || 0), 0) / reviews.length
+    : Number(product.rating || 0);
+  const displayedReviewCount = reviews.length || Number(product.reviewCount || 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
@@ -171,10 +267,10 @@ export const ProductDetailPage = () => {
             <div className="flex items-center space-x-2 mt-2">
               <div className="flex items-center space-x-1 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
                 <Star className="w-3.5 h-3.5 text-[#FFA41C] fill-[#FFA41C]" />
-                <span className="text-xs font-black text-neutral-900">{product.rating}</span>
+                <span className="text-xs font-black text-neutral-900">{averageReviewRating.toFixed(1)}</span>
               </div>
               <span className="text-xs font-semibold text-neutral-500">
-                ({product.reviewCount} customer reviews)
+                ({displayedReviewCount} customer reviews)
               </span>
               <span className="text-neutral-300">•</span>
               <span className="text-xs font-bold text-emerald-600">Verified Drop</span>
@@ -184,20 +280,20 @@ export const ProductDetailPage = () => {
           {/* Pricing Section with Strikethrough & Savings Pill */}
           <div className="p-4 bg-neutral-50 rounded-2xl border border-neutral-200/80">
             <div className="flex items-baseline space-x-3">
-              <span className="text-3xl font-black text-neutral-900">${product.price}</span>
+              <span className="text-3xl font-black text-neutral-900">{formatINR(product.price)}</span>
               {product.originalPrice && (
                 <span className="text-base text-neutral-400 line-through">
-                  ${product.originalPrice}
+                  {formatINR(product.originalPrice)}
                 </span>
               )}
               {product.discountPercent > 0 && (
                 <span className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2.5 py-1 rounded-full">
-                  Save ${product.originalPrice - product.price} ({product.discountPercent}% OFF)
+                  Save {formatINR(product.originalPrice - product.price)} ({product.discountPercent}% OFF)
                 </span>
               )}
             </div>
             <p className="text-[11px] text-neutral-500 mt-1">
-              Inclusive of all taxes. Free express shipping on orders over $100.
+              Inclusive of all taxes. Free delivery is available on qualifying orders.
             </p>
           </div>
 
@@ -210,10 +306,10 @@ export const ProductDetailPage = () => {
                 </span>
               </div>
               <div className="flex space-x-3">
-                {product.colors.map((color) => (
+                {product.colors.map((color, index) => (
                   <button
                     key={color.name}
-                    onClick={() => setSelectedColor(color.name)}
+                    onClick={() => handleColorSelect(color, index)}
                     className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl border-2 transition-all ${
                       selectedColor === color.name
                         ? 'border-black bg-neutral-100 font-bold'
@@ -383,7 +479,7 @@ export const ProductDetailPage = () => {
               </button>
               {openAccordions.shipping && (
                 <div className="p-3.5 pt-0 bg-white text-xs text-neutral-600 space-y-1.5 leading-relaxed">
-                  <p>• Complimentary express shipping on all domestic orders over $100.</p>
+                  <p>• Complimentary express shipping on qualifying domestic orders.</p>
                   <p>• 14 days zero-questions-asked doorstep pickup and full refund/exchange.</p>
                   <p>• 100% genuine quality authentication seal guaranteed.</p>
                 </div>
@@ -396,105 +492,133 @@ export const ProductDetailPage = () => {
 
       </div>
 
-      {/* Customer Reviews & Ratings Section with Progress Bars */}
+      {/* Customer Reviews & Ratings Section */}
       <div className="pt-12 border-t border-neutral-200 space-y-8">
         <div>
-          <h2 className="text-2xl font-black uppercase text-neutral-900">
-            Customer Reviews & Ratings
-          </h2>
-          <p className="text-xs text-neutral-500 mt-0.5">
-            Real feedback from verified purchasers worldwide
-          </p>
+          <h2 className="text-2xl font-black uppercase text-neutral-900">Customer Reviews & Ratings</h2>
+          <p className="text-xs text-neutral-500 mt-0.5">Ratings and feedback fetched from the backend review API.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-          
-          {/* Rating Summary Card (Amazon style) */}
-          <div className="md:col-span-4 bg-white p-6 rounded-3xl border border-neutral-200/80 space-y-4">
+          {/* Rating Summary */}
+          <div className="md:col-span-4 bg-white p-6 rounded-3xl border border-neutral-200/80 space-y-5">
             <div className="text-center pb-4 border-b border-neutral-100">
-              <span className="text-5xl font-black text-neutral-900">{product.rating}</span>
+              <span className="text-5xl font-black text-neutral-900">{averageReviewRating ? averageReviewRating.toFixed(1) : '0.0'}</span>
               <div className="flex justify-center text-[#FFA41C] my-2">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#FFA41C]" />
+                  <Star key={i} className={`w-4 h-4 ${i < Math.round(averageReviewRating) ? 'fill-[#FFA41C]' : 'text-neutral-300'}`} />
                 ))}
               </div>
-              <span className="text-xs text-neutral-500 font-semibold">
-                Based on {product.reviewCount} global ratings
-              </span>
+              <span className="text-xs text-neutral-500 font-semibold">Based on {displayedReviewCount} ratings</span>
             </div>
 
-            {/* Rating Progress Bars (Amazon style requirement) */}
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center space-x-3">
-                <span className="w-12 font-bold text-neutral-700">5 Star</span>
-                <div className="flex-1 w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#FFA41C] h-full rounded-full" style={{ width: '84%' }} />
-                </div>
-                <span className="w-8 text-right text-neutral-400 font-medium">84%</span>
+            {reviews.length > 0 ? (
+              <div className="space-y-2 text-xs">
+                {[5, 4, 3, 2, 1].map((star) => {
+                  const count = reviews.filter((review) => Number(review.rating) === star).length;
+                  const percent = Math.round((count / reviews.length) * 100);
+                  return (
+                    <div key={star} className="flex items-center space-x-3">
+                      <span className="w-12 font-bold text-neutral-700">{star} Star</span>
+                      <div className="flex-1 bg-neutral-200 h-2 rounded-full overflow-hidden">
+                        <div className="bg-[#FFA41C] h-full rounded-full transition-all" style={{ width: `${percent}%` }} />
+                      </div>
+                      <span className="w-8 text-right text-neutral-400 font-medium">{percent}%</span>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="flex items-center space-x-3">
-                <span className="w-12 font-bold text-neutral-700">4 Star</span>
-                <div className="flex-1 w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#FFA41C] h-full rounded-full" style={{ width: '12%' }} />
-                </div>
-                <span className="w-8 text-right text-neutral-400 font-medium">12%</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="w-12 font-bold text-neutral-700">3 Star</span>
-                <div className="flex-1 w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#FFA41C] h-full rounded-full" style={{ width: '3%' }} />
-                </div>
-                <span className="w-8 text-right text-neutral-400 font-medium">3%</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <span className="w-12 font-bold text-neutral-700">2 Star</span>
-                <div className="flex-1 w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                  <div className="bg-[#FFA41C] h-full rounded-full" style={{ width: '1%' }} />
-                </div>
-                <span className="w-8 text-right text-neutral-400 font-medium">1%</span>
-              </div>
-            </div>
+            ) : (
+              <p className="text-xs text-neutral-500 text-center py-3">No backend reviews yet. Be the first to rate this drop.</p>
+            )}
           </div>
 
-          {/* Verified Customer Review Cards */}
-          <div className="md:col-span-8 space-y-4">
-            {REVIEWS_MOCK.map((review) => (
-              <div key={review.id} className="bg-white p-5 rounded-2xl border border-neutral-200/80 space-y-2">
-                <div className="flex justify-between items-start">
+          {/* Add Review */}
+          <div className="md:col-span-8 bg-white p-6 rounded-3xl border border-neutral-200/80">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 className="text-sm font-black uppercase text-neutral-900">Write a review</h3>
+                <p className="text-[11px] text-neutral-400 mt-1">Your review is saved through the backend API.</p>
+              </div>
+              {!isAuthenticated && (
+                <button onClick={() => navigateTo('auth')} className="text-[11px] font-black uppercase text-[#FF3E6C] hover:underline">Sign in to review</button>
+              )}
+            </div>
+
+            <form onSubmit={handleReviewSubmit} className="space-y-4">
+              <div>
+                <label className="block text-[11px] font-black uppercase text-neutral-700 mb-2">Your Rating</label>
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      type="button"
+                      key={star}
+                      onClick={() => setReviewRating(star)}
+                      className="p-1 transition-transform hover:scale-110"
+                      aria-label={`Rate ${star} stars`}
+                    >
+                      <Star className={`w-6 h-6 ${star <= reviewRating ? 'fill-[#FFA41C] text-[#FFA41C]' : 'text-neutral-300'}`} />
+                    </button>
+                  ))}
+                  <span className="ml-2 text-xs font-bold text-neutral-600">{reviewRating}/5</span>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-black uppercase text-neutral-700 mb-2">Comment</label>
+                <textarea
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
+                  rows={4}
+                  maxLength={500}
+                  placeholder="Tell other shoppers what you liked about this drop..."
+                  className="w-full text-xs px-3.5 py-3 border border-neutral-300 rounded-xl focus:border-black focus:outline-none resize-none"
+                />
+              </div>
+
+              {reviewError && <p className="text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-xl p-3">{reviewError}</p>}
+              {reviewSuccess && <p className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-xl p-3">{reviewSuccess}</p>}
+
+              <button
+                type="submit"
+                disabled={reviewLoading}
+                className="px-5 py-3 bg-black hover:bg-neutral-800 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all hover:-translate-y-0.5 disabled:opacity-50"
+              >
+                {reviewLoading ? 'Submitting...' : isAuthenticated ? 'Submit Review' : 'Sign In to Review'}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {/* Backend review list */}
+        <div className="space-y-4">
+          {reviews.length === 0 ? (
+            <div className="bg-white p-8 rounded-2xl border border-neutral-200 text-center text-xs text-neutral-500">
+              Reviews from this product will appear here after users submit them.
+            </div>
+          ) : (
+            reviews.map((review) => (
+              <div key={review._id} className="bg-white p-5 rounded-2xl border border-neutral-200/80 space-y-2 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start gap-4">
                   <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="font-bold text-sm text-neutral-900">{review.author}</span>
-                      {review.verified && (
-                        <span className="inline-flex items-center space-x-1 text-[10px] font-black uppercase text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                          <Check className="w-3 h-3 stroke-[3]" />
-                          <span>Verified Purchase</span>
-                        </span>
-                      )}
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-sm text-neutral-900">{review.user?.name || 'Customer'}</span>
+                      <span className="text-[10px] font-black uppercase text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Backend Review</span>
                     </div>
-                    <div className="flex items-center space-x-2 mt-1">
+                    <div className="flex items-center gap-2 mt-1">
                       <div className="flex text-[#FFA41C]">
-                        {[...Array(review.rating)].map((_, i) => (
-                          <Star key={i} className="w-3 h-3 fill-[#FFA41C]" />
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className={`w-3 h-3 ${i < Number(review.rating) ? 'fill-[#FFA41C]' : 'text-neutral-300'}`} />
                         ))}
                       </div>
-                      <span className="text-[11px] text-neutral-400">{review.date}</span>
+                      <span className="text-[11px] text-neutral-400">{review.createdAt ? new Date(review.createdAt).toLocaleDateString('en-IN') : ''}</span>
                     </div>
                   </div>
                 </div>
-
-                <h4 className="font-bold text-xs text-neutral-900">{review.title}</h4>
-                <p className="text-xs text-neutral-600 leading-relaxed">{review.content}</p>
-
-                <div className="pt-2 flex items-center space-x-2 text-[11px] text-neutral-400">
-                  <span>Was this helpful?</span>
-                  <button className="px-2 py-1 rounded border border-neutral-200 text-neutral-700 hover:border-black font-semibold text-[10px]">
-                    Yes ({review.helpfulCount})
-                  </button>
-                </div>
+                <p className="text-xs text-neutral-600 leading-relaxed">{review.comment}</p>
               </div>
-            ))}
-          </div>
-
+            ))
+          )}
         </div>
       </div>
 

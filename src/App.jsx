@@ -20,6 +20,7 @@ import { OrderTrackingPage } from './pages/OrderTrackingPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { AuthPage } from './pages/AuthPage';
+import { WishlistPage } from './pages/WishlistPage';
 
 // Default Global Footer
 const StoreFooter = () => (
@@ -89,6 +90,8 @@ const AppContent = () => {
         return <ProductDetailPage />;
       case 'cart':
         return <CartPage />;
+      case 'wishlist':
+        return <WishlistPage />;
       case 'checkout':
         return (
           <ProtectedRoute>

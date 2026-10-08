@@ -12,14 +12,13 @@ import { useStore } from '../context/StoreContext';
 import { FilterSidebar } from '../components/product/FilterSidebar';
 import { ProductCard } from '../components/product/ProductCard';
 import { CATEGORIES } from '../data/products';
+import { formatINR } from '../utils/currency';
 
 export const ProductListingPage = () => {
   const {
     filteredProducts = [],
-    // `loading` and `error` must be added to the StoreContext value (see notes).
-    // Defaults keep this page working even before the context is updated.
-    loading = false,
-    error = null,
+    productsLoading: loading = false,
+    productsError: error = null,
     selectedCategory,
     setSelectedCategory,
     selectedBrands,
@@ -190,11 +189,11 @@ export const ProductListingPage = () => {
                 </span>
               ))}
 
-              {priceRange[1] < 250 && (
+              {priceRange[1] < 100000 && (
                 <span className={badgeClasses}>
-                  <span>Under ${priceRange[1]}</span>
+                  <span>Under {formatINR(priceRange[1])}</span>
                   <button
-                    onClick={() => setPriceRange([0, 250])}
+                    onClick={() => setPriceRange([0, 100000])}
                     aria-label="Remove price filter"
                   >
                     <X className="w-3.5 h-3.5 hover:text-red-500" />

@@ -3,6 +3,7 @@ import { Heart, Star, ShoppingBag, Eye, Check } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import { useStore } from '../../context/StoreContext';
+import { formatINR } from '../../utils/currency';
 
 export const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
@@ -34,7 +35,7 @@ export const ProductCard = ({ product }) => {
       className="group relative bg-white rounded-2xl border border-neutral-100/80 shadow-sm hover:shadow-xl hover:border-neutral-300 transition-all duration-300 overflow-hidden cursor-pointer flex flex-col justify-between"
     >
       {/* Image Container with Hover Zoom */}
-      <div classNe="relative aspect-[4/5] bg-neutral-100 overflow-hidden">
+      <div className="relative aspect-[4/5] bg-neutral-100 overflow-hidden">
         <img
           src={product.images[0]}
           alt={product.name}
@@ -127,7 +128,7 @@ export const ProductCard = ({ product }) => {
               {product.colors.map((color) => (
                 <span
                   key={color.name}
-                  className="w-3 h-3 rounded-full border border-neutral-300 shadow-xs"
+                  className="w-3 h-3 rounded-full border border-neutral-300 shadow-xs hover:scale-125 transition-transform"
                   style={{ backgroundColor: color.hex }}
                   title={color.name}
                 />
@@ -143,11 +144,11 @@ export const ProductCard = ({ product }) => {
         <div className="mt-3 pt-3 border-t border-neutral-100 flex items-center justify-between">
           <div className="flex items-baseline space-x-2">
             <span className="text-base font-black text-neutral-900">
-              ${product.price}
+              {formatINR(product.price)}
             </span>
             {product.originalPrice && (
               <span className="text-xs text-neutral-400 line-through">
-                ${product.originalPrice}
+                {formatINR(product.originalPrice)}
               </span>
             )}
           </div>

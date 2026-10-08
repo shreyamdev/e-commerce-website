@@ -17,6 +17,7 @@ import {
 import confetti from 'canvas-confetti';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
+import { formatINR } from '../utils/currency';
 
 export const CheckoutPage = () => {
   const { cartItems, grandTotal, subtotal, discountAmount, shippingFee, appliedCoupon, clearCart } = useCart();
@@ -245,21 +246,21 @@ export const CheckoutPage = () => {
             <div className="space-y-2 text-xs text-neutral-600">
               <div className="flex justify-between">
                 <span>Items ({cartItems.length})</span>
-                <span className="font-semibold text-neutral-900">${subtotal}</span>
+                <span className="font-semibold text-neutral-900">{formatINR(subtotal)}</span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-600 font-semibold">
                   <span>Coupon Savings</span>
-                  <span>-${discountAmount}</span>
+                  <span>-{formatINR(discountAmount)}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>{shippingFee === 0 ? 'FREE' : `$${shippingFee}`}</span>
+                <span>{shippingFee === 0 ? 'FREE' : formatINR(shippingFee)}</span>
               </div>
               <div className="flex justify-between font-black text-base text-neutral-900 pt-2 border-t border-neutral-200">
                 <span>Total Due</span>
-                <span className="text-[#FF3E6C]">${grandTotal}</span>
+                <span className="text-[#FF3E6C]">{formatINR(grandTotal)}</span>
               </div>
             </div>
           </div>
@@ -373,14 +374,14 @@ export const CheckoutPage = () => {
                   <QrCode className="w-24 h-24 text-neutral-800" />
                 </div>
                 <p className="text-xs font-bold text-neutral-700">Scan QR Code with Google Pay, PhonePe, or Paytm</p>
-                <p className="text-[11px] text-neutral-400">Dynamic QR generated for exact order amount (${grandTotal})</p>
+                <p className="text-[11px] text-neutral-400">Dynamic QR generated for exact order amount ({formatINR(grandTotal)})</p>
               </div>
             )}
 
             {paymentMethod === 'cod' && (
               <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-800 space-y-1">
                 <p className="font-bold">Doorstep Cash Payment Selected</p>
-                <p className="text-amber-700">Please keep exact change of ${grandTotal} ready at the time of delivery.</p>
+                <p className="text-amber-700">Please keep exact change of {formatINR(grandTotal)} ready at the time of delivery.</p>
               </div>
             )}
 
@@ -389,7 +390,7 @@ export const CheckoutPage = () => {
               onClick={handlePlaceOrder}
               className="w-full mt-6 py-4 bg-[#FF3E6C] hover:bg-[#e0355f] text-white rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-[0.98] shadow-xl"
             >
-              <span>Authorize & Place Order (${grandTotal})</span>
+              <span>Authorize & Place Order ({formatINR(grandTotal)})</span>
               <Sparkles className="w-4 h-4" />
             </button>
           </div>

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useStore } from '../context/StoreContext';
+import { formatINR } from '../utils/currency';
 
 export const CartPage = () => {
   const { 
@@ -97,7 +98,7 @@ export const CartPage = () => {
               {amountNeededForFreeShipping === 0 ? (
                 <span className="text-emerald-400">You qualify for FREE Express Shipping! 🎉</span>
               ) : (
-                <span>Add <strong className="text-[#FFA41C]">${amountNeededForFreeShipping}</strong> more to unlock <strong>FREE Shipping</strong></span>
+                <span>Add <strong className="text-[#FFA41C]">{formatINR(amountNeededForFreeShipping)}</strong> more to unlock <strong>FREE Shipping</strong></span>
               )}
             </p>
             <p className="text-[11px] text-neutral-400">Complimentary 2-day delivery across domestic hubs</p>
@@ -153,11 +154,11 @@ export const CartPage = () => {
 
                     <div className="flex items-baseline space-x-2 mt-2">
                       <span className="text-sm font-black text-neutral-900">
-                        ${product.price} each
+                        {formatINR(product.price)} each
                       </span>
                       {product.originalPrice && (
                         <span className="text-xs text-neutral-400 line-through">
-                          ${product.originalPrice}
+                          {formatINR(product.originalPrice)}
                         </span>
                       )}
                     </div>
@@ -167,7 +168,7 @@ export const CartPage = () => {
                 <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-neutral-100">
                   <div className="text-right">
                     <span className="text-base font-black text-neutral-900">
-                      ${product.price * quantity}
+                      {formatINR(product.price * quantity)}
                     </span>
                   </div>
 
@@ -255,25 +256,25 @@ export const CartPage = () => {
             <div className="space-y-3 text-xs text-neutral-600 border-t border-neutral-100 pt-4">
               <div className="flex justify-between">
                 <span>Items Subtotal</span>
-                <span className="font-semibold text-neutral-900">${subtotal}</span>
+                <span className="font-semibold text-neutral-900">{formatINR(subtotal)}</span>
               </div>
               {appliedCoupon && (
                 <div className="flex justify-between text-emerald-600 font-semibold">
                   <span>Coupon Discount ({appliedCoupon.code})</span>
-                  <span>-${discountAmount}</span>
+                  <span>-{formatINR(discountAmount)}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span>Estimated Shipping</span>
-                <span>{shippingFee === 0 ? <strong className="text-emerald-600 font-bold">FREE</strong> : `$${shippingFee}`}</span>
+                <span>{shippingFee === 0 ? <strong className="text-emerald-600 font-bold">FREE</strong> : formatINR(shippingFee)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Estimated Sales Tax (8%)</span>
-                <span className="font-semibold text-neutral-900">${Math.round(subtotal * 0.08)}</span>
+                <span className="font-semibold text-neutral-900">{formatINR(Math.round(subtotal * 0.08))}</span>
               </div>
               <div className="flex justify-between text-lg font-black text-neutral-900 pt-3 border-t border-neutral-200">
                 <span>Total Amount</span>
-                <span className="text-[#FF3E6C]">${grandTotal}</span>
+                <span className="text-[#FF3E6C]">{formatINR(grandTotal)}</span>
               </div>
             </div>
 
